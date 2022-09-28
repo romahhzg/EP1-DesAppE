@@ -13,7 +13,8 @@ public class MainApp {
         Connection conexion = DriverManager.getConnection(jdbcUrl, "root", "root");
 
         //Statement st = con.createStatement();
-        testPreparedStatement(conexion);
+        //testPreparedStatement(conexion);
+        testCallableStatement(conexion);
 
         conexion.close();
     }
@@ -47,5 +48,21 @@ public class MainApp {
 
             System.out.println("Filas afectadas: " + affectedRows);
 
-    }
+        }
+
+        public static void testCallableStatement(Connection connection) throws Exception{
+
+        CallableStatement cs = connection.prepareCall("{call getAllUsers()}");
+        ResultSet rs = cs.executeQuery();
+
+        while(rs.next()){
+            System.out.println(rs.getString("id") + " " +
+                rs.getString("name") + " " +
+                " " + rs.getString("lastname") + " " +
+                " " + rs.getString("age") + " " +
+                " " + rs.getString("city") + " " +
+                " " + rs.getString("phone"));
+                }
+        }
+
 }
