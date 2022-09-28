@@ -1,9 +1,6 @@
 package isil.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class MainApp {
 
@@ -13,9 +10,13 @@ public class MainApp {
 
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        Connection con = DriverManager.getConnection(jdbcUrl, "root", "root");
+        Connection conexion = DriverManager.getConnection(jdbcUrl, "root", "root");
 
-        Statement st = con.createStatement();
+        //Statement st = con.createStatement();
+        testPreparedStatement(conexion);
+
+        conexion.close();
+    }
 
         //ResultSet rs = st.executeQuery("select * from Users");
 
@@ -29,9 +30,22 @@ public class MainApp {
         //}
 
             //Insertar con Statement
-            int filasAfectadas = st.executeUpdate("insert into Users values(6,'Sussy',' Paredes' ,'38', 'Tumbes', '915357468')");
+            //int filasAfectadas = st.executeUpdate("insert into Users values(6,'Sussy',' Paredes' ,'38', 'Tumbes', '915357468')");
 
-            System.out.println("Filas afectadas: "+filasAfectadas);
+            //System.out.println("Filas afectadas: "+filasAfectadas);
+
+        //public static void testStatement(Connection connection) throws Exception{ }
+
+        public static void testPreparedStatement(Connection connection) throws Exception{
+
+            //Actualizar con PreparedStatement
+            PreparedStatement preparedStatement = connection.prepareStatement("update Users set name=? where id=?");
+            preparedStatement.setString(1,"Enrique");
+            preparedStatement.setInt (2,3);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            System.out.println("Filas afectadas: " + affectedRows);
 
     }
 }
